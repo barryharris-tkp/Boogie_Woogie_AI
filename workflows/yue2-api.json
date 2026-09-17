@@ -1,0 +1,105 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "yue2_3b_int8_convrot.safetensors"
+    }
+  },
+  "2": {
+    "class_type": "YuE2GenerateMusic",
+    "inputs": {
+      "clip": [
+        "1",
+        1
+      ],
+      "style": "Country pop, warm clear female lead vocals, acoustic guitar, pedal steel, gentle drums, uplifting storytelling, polished studio recording",
+      "lyrics": "[Verse]\nThe porch light shines on an open road\nI set down the weight of a heavy load\n[Chorus]\nWe keep on dancing where the river bends\nA little more music and a few good friends\n[Outro]\nA few good friends",
+      "abc": "",
+      "seed": 42,
+      "mode": "full",
+      "max_duration": 60,
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 100,
+      "repetition_penalty": 1.2
+    }
+  },
+  "3": {
+    "class_type": "ConditioningZeroOut",
+    "inputs": {
+      "conditioning": [
+        "2",
+        0
+      ]
+    }
+  },
+  "4": {
+    "class_type": "EmptyYuE2LatentAudio",
+    "inputs": {
+      "seconds": [
+        "2",
+        1
+      ],
+      "batch_size": 1
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "2",
+        0
+      ],
+      "negative": [
+        "3",
+        0
+      ],
+      "latent_image": [
+        "4",
+        0
+      ],
+      "seed": 42,
+      "steps": 32,
+      "cfg": 1.0,
+      "sampler_name": "dpm_2",
+      "scheduler": "sgm_uniform",
+      "denoise": 1.0
+    }
+  },
+  "6": {
+    "class_type": "VAEDecodeAudio",
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    }
+  },
+  "9": {
+    "class_type": "BoogieYuE2Report",
+    "inputs": {
+      "conditioning": ["2", 0],
+      "clip": ["1", 1],
+      "planning_generated": false,
+      "abc_truncated": false
+    }
+  },
+  "7": {
+    "class_type": "SaveAudio",
+    "inputs": {
+      "audio": [
+        "6",
+        0
+      ],
+      "filename_prefix": "boogie/track"
+    }
+  }
+}

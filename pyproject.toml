@@ -1,0 +1,13 @@
+[project]
+name = "boogie-woogie-ai"
+version = "0.1.0"
+description = "A local AI music station with synchronized song covers"
+requires-python = ">=3.11"
+dependencies = ["fastapi==0.141.1", "uvicorn[standard]==0.53.0", "httpx==0.28.1", "pillow==12.3.0", "python-multipart==0.0.32", "python-dotenv==1.2.3"]
+
+[dependency-groups]
+dev = ["pytest==9.1.1"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
